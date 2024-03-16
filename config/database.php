@@ -1,15 +1,17 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$pwd = "";
-$dbname = "PetShop";
 
-// Create connection
-$conn = new mysqli($servername, $username, $pwd, $dbname);
+function getDatabaseConnection() {
+    $servername = "localhost";
+    $username = "root";
+    $pwd = "";
+    $dbname = "PetShop";
 
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
+    $conn = new mysqli($servername, $username, $pwd, $dbname);
+
+    if ($conn->connect_error) {
+      die("Connection failed: " . $conn->connect_error);
+    }
+
+    return $conn;
 }
-echo "Connected successfully";
-?> 
+?>
