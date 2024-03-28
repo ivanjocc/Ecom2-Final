@@ -88,3 +88,12 @@ ALTER TABLE ProductOrder
         FOREIGN KEY (order_id) REFERENCES `Order` (order_id),
     ADD CONSTRAINT fk_order_product
         FOREIGN KEY (product_id) REFERENCES Product (product_id);
+
+-- Insert roles
+INSERT INTO Role (description) VALUES ('User'), ('Admin');
+
+-- Default User and Default Admin
+INSERT INTO `User` (last_name, first_name, email, password, date_of_birth, phone_number, image_path, role_id) 
+VALUES 
+('Doe', 'John', 'john.doe@example.com', 'contraseña_hasheada', '1990-01-01', '1234567890', '', 1),
+('Smith', 'Jane', 'jane.smith@example.com', 'contraseña_hasheada', '1985-05-05', '0987654321', '', 2);
