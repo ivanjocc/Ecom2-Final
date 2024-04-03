@@ -19,17 +19,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         'role_id' => 1 // Ajusta según tu formulario o lógica de negocio
     ];
 
-    // Asegúrate de validar y sanear los datos aquí
-
-    // Intenta registrar al usuario
     $result = $userController->addUser($userDetails);
 
     if ($result) {
         echo "User added successfully.";
-        // Considera redireccionar a otra página
+        header("Location: login.php");
     } else {
         echo "Error adding the user.";
-        // Maneja el error
     }
 }
 ?>
@@ -67,6 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
         <button type="submit">Register</button>
     </form>
+    <a href="./login.php">Already have an account?</a>
 </div>
 
 </body>

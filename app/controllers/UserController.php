@@ -21,7 +21,8 @@ class UserController
     {
         $result = $this->userModel->create($userDetails);
         if ($result) {
-            echo "User added successfully.";
+            // echo "User added successfully.";
+            header("Location: login.php");
         } else {
             echo "Error adding the user.";
         }
