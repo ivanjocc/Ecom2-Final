@@ -18,15 +18,12 @@ class AuthController
         $user = $this->userModel->authenticate($email, $password);
 
         if ($user) {
-            // Inicia la sesión y guarda los datos del usuario 
             session_start();
             $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['role_id'] = $user['role_id'];
             
-            // Redirecciona al usuario a la página de inicio
             header("Location: profile.php");
         } else {
-            // Falló la autenticación, muestra un error
             echo "Credenciales incorrectas.";
         }
     }

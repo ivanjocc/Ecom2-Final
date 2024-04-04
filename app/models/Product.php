@@ -17,32 +17,38 @@ class Product
         $this->conn = $db;
     }
 
-    public function read()
-    {
-        $query = "SELECT * FROM " . $this->table_name;
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
-        return $stmt;
+    // Leer todos los productos
+    public function getAllProducts() {
+        $products = [];
+        $sql = "SELECT product_id, product_name, description, price FROM Product";
+        $result = $this->conn->query($sql);
+
+        while ($row = $result->fetch_assoc()) {
+            $products[] = $row;
+        }
+
+        return $products;
     }
 
-    public function create()
-    {
-        $query = "INSERT INTO " . $this->table_name . " (product_name, description, short_description, quantity, price) VALUES (?, ?, ?, ?, ?)";
+    // Crear un nuevo producto
+    public function createProduct($productName, $description, $price) {
+        $stmt = $this->conn->prepare("INSERT INTO Product (product_name, description, price) VALUES (?, ?, ?)");
+        $stmt->bind_param("ssd", $productName, $description, $price);
+        return $stmt->execute(); // Devuelve true si la operación es exitosa
+    }
 
-        $stmt = $this->conn->prepare($query);
+    // Actualizar un producto
+    public function updateProduct($productId, $productName, $description, $price) {
+        $stmt = $this->conn->prepare("UPDATE Product SET product_name = ?, description = ?, price = ? WHERE product_id = ?");
+        $stmt->bind_param("ssdi", $productName, $description, $price, $productId);
+        return $stmt->execute(); // Devuelve true si la operación es exitosa
+    }
 
-        $this->product_name=htmlspecialchars(strip_tags($this->product_name));
-        $this->description=htmlspecialchars(strip_tags($this->description));
-        $this->short_description=htmlspecialchars(strip_tags($this->short_description));
-        $this->quantity=htmlspecialchars(strip_tags($this->quantity));
-        $this->price=htmlspecialchars(strip_tags($this->price));
-
-        $stmt->bind_param("sssii", $this->product_name, $this->description, $this->short_description, $this->quantity, $this->price);
-
-        if($stmt->execute()) {
-            return true;
-        }
-        return false;
+    // Eliminar un producto
+    public function deleteProduct($productId) {
+        $stmt = $this->conn->prepare("DELETE FROM Product WHERE product_id = ?");
+        $stmt->bind_param("i", $productId);
+        return $stmt->execute(); // Devuelve true si la operación es exitosa
     }
 }
 ?>

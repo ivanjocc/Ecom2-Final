@@ -1,6 +1,6 @@
 <?php
 
-require_once 'models/Product.php';
+require_once __DIR__ . '/../models/Product.php';
 
 class ProductController
 {
@@ -11,20 +11,26 @@ class ProductController
         $this->productModel = new Product($db);
     }
 
-    public function listProducts()
-    {
-        $products = $this->productModel->read();
-        require 'views/client/viewProducts.php';
+    public function listProducts() {
+        $products = $this->productModel->getAllProducts();
+        require_once "views/client/viewProducts.php";
     }
 
-    public function addProduct($productDetails)
-    {
-        $result = $this->productModel->create($productDetails);
-        if ($result) {
-            echo "Product added successfully.";
-        } else {
-            echo "Error adding the product.";
+    public function addProduct() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $productName = $_POST['productName'];
+            $description = $_POST['description'];
+            $price = $_POST['price'];
+    
+            $success = $this->productModel->createProduct($productName, $description, $price);
+    
+            if ($success) {
+                // Producto agregado exitosamente, redirige o muestra un mensaje
+            } else {
+                // Error al agregar el producto
+            }
         }
+    
     }
 
     public function updateProduct($productId, $productDetails)
