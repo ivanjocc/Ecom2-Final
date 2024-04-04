@@ -3,7 +3,6 @@ require_once __DIR__ . '/../../../config/database.php';
 require_once __DIR__ . '/../../controllers/UserController.php';
 
 
-// Inicializa el controlador con acceso a la base de datos
 $db = getDatabaseConnection();
 $userController = new UserController($db);
 
@@ -12,24 +11,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         'last_name' => $_POST['last_name'],
         'first_name' => $_POST['first_name'],
         'email' => $_POST['email'],
-        'password' => $_POST['password'], // Asegúrate de hashear esta contraseña antes de guardarla en la base de datos
-        'date_of_birth' => '1990-01-01', // Ajusta según tu formulario
-        'phone_number' => '0000000000', // Ajusta según tu formulario
-        'image_path' => '', // Ajusta según tu formulario
-        'role_id' => 1 // Ajusta según tu formulario o lógica de negocio
+        'password' => $_POST['password'],
+        'date_of_birth' => '1990-01-01',
+        'phone_number' => '0000000000',
+        'image_path' => '',
+        'role_id' => 1
     ];
 
     $result = $userController->addUser($userDetails);
-
-    if ($result) {
-        echo "User added successfully.";
-        header("Location: login.php");
-    } else {
-        echo "Error adding the user.";
-    }
 }
 ?>
-
 
 
 <!DOCTYPE html>

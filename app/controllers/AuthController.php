@@ -1,6 +1,6 @@
 <?php
 
-require_once 'models/User.php';
+require_once __DIR__ . '/../models/User.php';
 
 class AuthController
 {
@@ -11,15 +11,26 @@ class AuthController
         $this->userModel = new User($db);
     }
 
-    public function login($email, $password)
-    {
-        $user = $this->userModel->findByEmail($email);
-        if ($user && password_verify($password, $user['password'])) {
-            echo "Login successful.";
+    public function login() {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+
+        $user = $this->userModel->authenticate($email, $password);
+
+        if ($user) {
+            // Inicia la sesión y guarda los datos del usuario 
+            session_start();
+            $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['role_id'] = $user['role_id'];
+            
+            // Redirecciona al usuario a la página de inicio
+            header("Location: profile.php");
         } else {
-            echo "Invalid email or password.";
+            // Falló la autenticación, muestra un error
+            echo "Credenciales incorrectas.";
         }
     }
+    
 
     public function register($userData)
     {
@@ -39,11 +50,23 @@ class AuthController
         }
     }
 
-    public function profile()
-    {
-        $userId = $_SESSION['user_id']; 
+    public function profile() {
+        session_start();
+
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: login.php');
+            exit;
+        }
+
+        $userId = $_SESSION['user_id'];
         $user = $this->userModel->findById($userId);
-        require 'views/auth/profile.php';
-    }
+
+        if (!$user) {
+            echo "User not found.";
+            exit;
+        }
+
+        require_once '../views/auth/profile.php';
+    }   
 }
 ?>

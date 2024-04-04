@@ -2,34 +2,31 @@
 
 require_once __DIR__ . '/../models/User.php';
 
-class UserController
-{
+class UserController {
     private $userModel;
 
-    public function __construct($db)
-    {
+    public function __construct($db) {
         $this->userModel = new User($db);
     }
 
-    public function listUsers()
-    {
+    public function listUsers() {
         $users = $this->userModel->read();
         require 'views/admin/listUsers.php';
     }
 
-    public function addUser($userDetails)
-    {
+    public function addUser($userDetails) {
         $result = $this->userModel->create($userDetails);
         if ($result) {
-            // echo "User added successfully.";
             header("Location: login.php");
+            exit;
         } else {
-            echo "Error adding the user.";
+            $_SESSION['error_message'] = "Error adding the user.";
+            header('Location: register.php');
+            exit;
         }
     }
 
-    public function updateUser($userId, $userDetails)
-    {
+    public function updateUser($userId, $userDetails) {
         $result = $this->userModel->update($userId, $userDetails);
         if ($result) {
             echo "User updated successfully.";
@@ -38,8 +35,7 @@ class UserController
         }
     }
 
-    public function deleteUser($userId)
-    {
+    public function deleteUser($userId) {
         $result = $this->userModel->delete($userId);
         if ($result) {
             echo "User deleted successfully.";

@@ -1,28 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="/public/css/style.css">
 </head>
 <body>
-
-<div class="login-container">
-    <h2>Login</h2>
-    <form action="/path/to/authController/loginMethod" method="POST">
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
+    <form action="./process_login.php" method="post">
+        <label for="email">Email:</label>
+        <input type="email" name="email" required>
+        <br />
+        <label for="password">Password:</label>
+        <input type="password" name="password" required>
+        <br />
         <button type="submit">Login</button>
+        <br />
+        <a href="register.php">Don't have an account?</a>
     </form>
-    <a href="./register.php">Dont have an account?</a>
-</div>
-
 </body>
 </html>
